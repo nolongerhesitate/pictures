@@ -1,12 +1,6 @@
-import LoginForm from "./ui/login-form";
-import Logo from "./logo";
 
-
-export default async function Home() {
+export default function Page() {
   return (
-    <main className="flex flex-col justify-center items-center">
-      <Logo />
-      <LoginForm />
-    </main>
+    <p>This is index page</p>
   );
 }
