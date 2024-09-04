@@ -1,5 +1,4 @@
 import { withAuth } from "next-auth/middleware"
-import { redirect } from "next/navigation";
 
 export default withAuth({
   // custom pages
