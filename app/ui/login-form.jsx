@@ -1,12 +1,16 @@
 "use client";
 
-import { Input, InputGroup, InputLeftElement, Flex, Button } from "@chakra-ui/react";
-import { EmailIcon, LockIcon } from "@chakra-ui/icons";
+import { Input, InputGroup, InputLeftElement, Flex, Button, Box, Text } from "@chakra-ui/react";
+import { EmailIcon, LockIcon, WarningTwoIcon } from "@chakra-ui/icons";
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+
 
 export default function LoginForm() {
   const [userInfo, setUserInfo] = useState({ username: "", password: "" });
+  const [errorInfo, setErrorInfo] = useState(null);
+  const router = useRouter();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -15,11 +19,17 @@ export default function LoginForm() {
       username: userInfo.username,
       password: userInfo.password,
       callbackUrl: "/",
+      redirect: false,
     });
 
-    // const { error, status, ok, url } = res;
-    console.log("#res:", res);
-    // debugger;
+    const { error, status, ok, url } = res;
+
+    if (ok) {
+      router.push(url);
+    } else {
+      setErrorInfo(error || `Error: ${status}`);
+    }
+
   }
 
   return (
@@ -31,6 +41,21 @@ export default function LoginForm() {
         alignItems="center"
         gap={6}
       >
+        {errorInfo && <Box
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          bg="tomato"
+          color="white"
+          p={2}
+          borderWidth="1px"
+          borderRadius="md"
+        >
+          <WarningTwoIcon boxSize={6} ml={2} mr={3} />
+          <Text>
+            {errorInfo}
+          </Text>
+        </Box>}
         <InputGroup>
           <InputLeftElement pointerEvents="none">
             <EmailIcon color="gray.300" />

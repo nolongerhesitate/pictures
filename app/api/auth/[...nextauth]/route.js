@@ -10,6 +10,9 @@ export const authOptions = {
     signIn: "/auth/signin"
   },
   callbacks: {
+    signIn({ user, account, profile, email, credentials }) {
+      return true;
+    },
     // The redirect callback is called anytime the user is redirected to a callback URL (e.g. on signin or signout).
     redirect({ url, baseUrl }) {
       // Allows relative callback URLs
@@ -25,15 +28,15 @@ export const authOptions = {
       name: "credentials",
       async authorize(credentials, req) {
         const { username, password } = credentials;
+        const error = new Error("E-mail address or password is incorrect.");
 
         const user = await getUser(username);
-        if (!user) return null;
+        if (!user) throw error;
 
         const same = await bcrypt.compare(password, user.password);
         if (same) return user;
 
-        // throw new Error("Invalid Credentials");
-        return null;
+        throw error;
       }
     })
   ],

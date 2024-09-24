@@ -13,18 +13,20 @@ export default function Page() {
       gap={6}
     >
       {/* <main className="flex flex-col justify-center items-center h-dvh w-dvw"> */}
-      <Logo />
-      <Box textAlign="center">
-        <Text fontSize="2xl" as="b"
-          className="my-0 py-0"
-          color="gray.700"
-        >R-Wallpapers</Text>
-        <Text fontSize="xl"
-          className="my-0 py-0"
-          color="gray.600"
-        >Management</Text>
+      <Box width="300px">
+        <Logo />
+        <Box textAlign="center" my={2}>
+          <Text fontSize="2xl" as="b"
+            className="my-0 py-0"
+            color="gray.700"
+          >R-Wallpapers</Text>
+          <Text fontSize="xl"
+            className="my-0 py-0"
+            color="gray.600"
+          >Management</Text>
+        </Box>
+        <LoginForm />
       </Box>
-      <LoginForm />
     </Flex >
     // </main>
   );
