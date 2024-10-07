@@ -1,14 +1,12 @@
 import Image from "next/image";
-import logoPic from "@/public/logo.jpg"
+import logoPic from "@/public/logo.png"
 
-export default function Logo() {
+export default function Logo({ width = 400, height = 200 }) {
   return (
-    <div>
-      <Image
-        src={logoPic}
-        width={400}
-        height={200}
-        alt="website logo"></Image>
-    </div>
+    <Image
+      src={logoPic}
+      width={width}
+      height={height}
+      alt="website logo" />
   );
 }
