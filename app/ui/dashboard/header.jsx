@@ -9,10 +9,21 @@ import {
   MenuList,
   MenuItem,
 } from "@chakra-ui/react";
+import { useDisclosure } from "@chakra-ui/react";
 import { Search2Icon } from "@chakra-ui/icons";
 import Logo from "../logo";
+import Dialog from "../components/dialog";
+import { useState } from "react";
+import { signOut } from "next-auth/react"
 
 export default function Header() {
+  const { isOpen, onOpen, onClose, } = useDisclosure();
+  const [dialogResult, setDialogResult] = useState(null);
+
+  if (dialogResult) {
+    signOut();
+  }
+
   return (
     <Flex
       height="60px"
@@ -38,9 +49,16 @@ export default function Header() {
           <Avatar name="Name" />
         </MenuButton>
         <MenuList>
-          <MenuItem >SignOut</MenuItem>
+          <MenuItem onClick={onOpen}>Sign Out</MenuItem>
         </MenuList>
       </Menu>
-    </Flex>
+      <Dialog
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Sign Out"
+        content="Do you want to sign out?"
+        setDialogResult={setDialogResult}
+      />
+    </Flex >
   );
 }
