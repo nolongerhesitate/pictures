@@ -10,30 +10,37 @@ import { useRouter } from "next/navigation";
 export default function LoginForm() {
   const [userInfo, setUserInfo] = useState({ username: "", password: "" });
   const [errorInfo, setErrorInfo] = useState(null);
+  const [isLogining, setIsLogining] = useState(false);
   const router = useRouter();
 
   async function handleSubmit(e) {
-    e.preventDefault();
+    try {
+      setIsLogining(true);
+      e.preventDefault();
 
-    const res = await signIn("credentials", {
-      username: userInfo.username,
-      password: userInfo.password,
-      callbackUrl: "/dashboard",
-      redirect: false,
-    });
+      const res = await signIn("credentials", {
+        username: userInfo.username,
+        password: userInfo.password,
+        callbackUrl: "/dashboard",
+        redirect: false,
+      });
 
-    const { error, status, ok, url } = res;
+      const { error, status, ok, url } = res;
 
-    if (ok) {
-      router.push(url);
-    } else {
-      setErrorInfo(error || `Error: ${status}`);
+      if (ok) {
+        router.push(url);
+      } else {
+        setErrorInfo(error || `Error: ${status}`);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLogining(false);
     }
-
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} >
       {/* <div className="h-[400px] flex flex-col justify-between align-center"> */}
       <Flex
         direction="column"
@@ -67,6 +74,7 @@ export default function LoginForm() {
             name="username"
             value={userInfo.username}
             onChange={({ target }) => { setUserInfo({ ...userInfo, username: target.value }) }}
+            aria-disabled={isLogining}
             required
           />
         </InputGroup>
@@ -81,10 +89,11 @@ export default function LoginForm() {
             placeholder="Your Password"
             value={userInfo.password}
             onChange={({ target }) => { setUserInfo({ ...userInfo, password: target.value }) }}
+            aria-disabled={isLogining}
             required
           />
         </InputGroup>
-        <Button type="submit">Login</Button>
+        <Button type="submit" aria-disabled={isLogining}>{isLogining ? "Logining..." : "Login"}</Button>
         {/* </div> */}
       </Flex >
     </form >
