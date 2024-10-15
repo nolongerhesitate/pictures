@@ -2,9 +2,11 @@
 
 import { Input, InputGroup, InputLeftElement, Flex, Button, Box, Text } from "@chakra-ui/react";
 import { EmailIcon, LockIcon, WarningTwoIcon } from "@chakra-ui/icons";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
+import { setUser } from "../lib/store/userSlice";
 
 
 export default function LoginForm() {
@@ -12,6 +14,7 @@ export default function LoginForm() {
   const [errorInfo, setErrorInfo] = useState(null);
   const [isLogining, setIsLogining] = useState(false);
   const router = useRouter();
+  const dispatch = useDispatch();
 
   async function handleSubmit(e) {
     try {
@@ -28,6 +31,8 @@ export default function LoginForm() {
       const { error, status, ok, url } = res;
 
       if (ok) {
+        const session = await getSession();
+        dispatch(setUser(session.user));
         router.push(url);
       } else {
         setErrorInfo(error || `Error: ${status}`);

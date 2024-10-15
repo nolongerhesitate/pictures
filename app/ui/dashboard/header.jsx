@@ -15,10 +15,13 @@ import Logo from "../logo";
 import Dialog from "../components/dialog";
 import { useState } from "react";
 import { signOut } from "next-auth/react"
+import { useSelector } from "react-redux";
+import { selectUser } from "@/app/lib/store/userSlice";
 
 export default function Header() {
   const { isOpen, onOpen, onClose, } = useDisclosure();
   const [dialogResult, setDialogResult] = useState(null);
+  const currentUser = useSelector(selectUser);
 
   if (dialogResult) {
     signOut();
@@ -46,7 +49,7 @@ export default function Header() {
       </InputGroup>
       <Menu>
         <MenuButton>
-          <Avatar name="Name" />
+          <Avatar name={currentUser.username} />
         </MenuButton>
         <MenuList>
           <MenuItem onClick={onOpen}>Sign Out</MenuItem>
