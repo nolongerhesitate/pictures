@@ -21,6 +21,21 @@ export const authOptions = {
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
     },
+    jwt({ token, user, account }) {
+      // This if branch must have
+      if (account) {
+        token.accessToken = account.access_token;
+        token.user = user;
+      }
+
+      return token;
+    },
+    session({ session, token }) {
+      session.accessToken = token.accessToken
+      session.user = token.user;
+
+      return session;
+    },
   },
   providers: [
     Credentials.default({
@@ -30,10 +45,10 @@ export const authOptions = {
         const { username, password } = credentials;
         const error = new Error("E-mail address or password is incorrect.");
 
-        const user = await getUser(username);
+        const { password: hashedPassword, ...user } = await getUser(username);
         if (!user) throw error;
 
-        const same = await bcrypt.compare(password, user.password);
+        const same = await bcrypt.compare(password, hashedPassword);
         if (same) return user;
 
         throw error;
