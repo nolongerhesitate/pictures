@@ -16,7 +16,8 @@ export default function SideNav({ ...props }) {
   return (
     <Flex
       direction="column"
-      {...props}>
+      {...props}
+    >
       {links.map(link => {
         return (
           <Link

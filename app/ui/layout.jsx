@@ -12,8 +12,8 @@ export default function Layout({ children }) {
     >
       <Header></Header>
       <Flex
-        width="100vw"
-        height="100vh"
+        width="100%"
+        height="100%"
         mt="10px"
       >
         <SideNav

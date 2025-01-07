@@ -9,40 +9,39 @@ import {
   Button,
 } from '@chakra-ui/react'
 import { useRef } from "react";
+import { closeDialog, useDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
 
-export default function Dialog({ buttonType = 1, ...props }) {
-  // buttonType: 1-Yes&Cancel, 2-Yes&No&Cancel
-  const {
-    isOpen,
-    onClose,
-    title,
-    content,
-    // return true if Yes is clicked, false if No is clicked, otherwise cancel
-    setDialogResult,
-  } = props;
+// TODO: give it a try to merge dialogContext.js and this file
+export default function Dialog() {
   const cancelRef = useRef()
+  const dialog = useDialog();
+  const dialogDispatch = useDialogDispatch();
+
+  if (dialog.isOpen === false) {
+    return null;
+  }
 
   function handleClick(e) {
     e.stopPropagation();
     const id = e.target.id;
-    setDialogResult(id === "yes" ? true : id === "no" ? false : null);
-    onClose();
+    dialog.setDialogResult(id === "yes" ? true : id === "no" ? false : null);
+
+    dialogDispatch(closeDialog());
   }
 
   return (
     <AlertDialog
-      isOpen={isOpen}
+      isOpen={dialog.isOpen}
       leastDestructiveRef={cancelRef}
-      onClose={onClose}
     >
       <AlertDialogOverlay>
         <AlertDialogContent>
           <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-            {title}
+            {dialog.title}
           </AlertDialogHeader>
 
           <AlertDialogBody>
-            {content}
+            {dialog.content}
           </AlertDialogBody>
 
           <AlertDialogFooter>
@@ -50,7 +49,7 @@ export default function Dialog({ buttonType = 1, ...props }) {
               Yes
             </Button>
             {
-              buttonType === 2 && (
+              dialog.buttonType === 2 && (
                 <Button id="no" colorScheme='blue' mr={3} onClick={handleClick}>
                   No
                 </Button>
