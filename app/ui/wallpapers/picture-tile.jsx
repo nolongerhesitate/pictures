@@ -23,6 +23,8 @@ export default function PictureTile({ picture }) {
       aspectRatio="1/1"
       src={picSrc}
       objectFit="cover"
+      border="1px solid #ccc"
+      padding="2px"
     />
   );
 }
