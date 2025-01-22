@@ -15,7 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUploadTasks, clearCompletedTasks } from '@/app/lib/store/uploadTasksSlice';
 import TaskItem from './task-item';
 import { useEffect } from 'react';
-import emitter from '@/app/lib/emitter';
+import emitter, { EVENTS } from '@/app/lib/emitter';
 
 export default function UploadTasks() {
   const allUploadTasks = useSelector(selectUploadTasks);
@@ -23,8 +23,8 @@ export default function UploadTasks() {
   const { onOpen, onClose, isOpen } = useDisclosure({ defaultIsOpen: true });
 
   useEffect(() => {
-    emitter.on('openUploadTasks', onOpen);
-    emitter.on('closeUploadTasks', onClose);
+    emitter.on(EVENTS.UPLOADTASK_OPENED, onOpen);
+    emitter.on(EVENTS.UPLOADTASK_CLOSED, onClose);
   }, []);
 
 

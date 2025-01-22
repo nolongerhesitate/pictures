@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { selectUploadTasks, addTask, addErrorDetail, completedCountPlusOne, skippedCountPlusOne, failedCountPlusOne } from "@/app/lib/store/uploadTasksSlice";
 import { ErrorDetail, UploadTask } from "@/app/lib/definitions";
 import dayjs from "dayjs";
-import emitter from "@/app/lib/emitter";
+import emitter, { EVENTS } from "@/app/lib/emitter";
 
 
 export default function TopBar() {
@@ -39,7 +39,7 @@ export default function TopBar() {
       uploadTaskIdRef.current = uploadTask.id;
 
       reduxDispatch(addTask(uploadTask));
-      emitter.emit('openUploadTasks');
+      emitter.emit(EVENTS.UPLOADTASK_OPENED);
 
       for (let i = 0; i < files.length; i++) {
         if (abortUploadRef.current) break;
