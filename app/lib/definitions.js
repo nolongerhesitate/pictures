@@ -7,14 +7,31 @@ export class DataResult {
   * @param {string} status - It has two values: success or failed;
   * @param {string} message
   * @param {*} data 
+  * @param {Pagination} pagination
   */
-  constructor(status, message, data = null) {
+  constructor(status, message, data = null, pagination = null) {
     this.status = status;
     this.message = message;
     this.data = data;
+    this.pagination = pagination;
   }
 
 };
+
+/** Class representing a Pagination */
+export class Pagination {
+  /**
+   * Create a Pagination
+   * @param {number} page - It is a current page number;
+   * @param {number} limit - It is a page size;
+   * @param {number} totalCount - It is a total count of items;
+   */
+  constructor(page, limit, totalCount) {
+    this.page = page;
+    this.limit = limit;
+    this.totalCount = totalCount;
+  }
+}
 
 /** Class representing a Picture Entity */
 export class Picture {

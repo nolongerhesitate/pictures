@@ -24,9 +24,9 @@ export async function getUser(username) {
   }
 }
 
-export async function querySql(sql) {
+export async function querySql(sql, params = []) {
   try {
-    const result = await db.query(sql);
+    const result = await db.query(sql, params);
     return result.rows;
   } catch (error) {
     logger.error(`Error running query: ${sql}; \n`, error);

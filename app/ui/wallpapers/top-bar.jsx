@@ -72,7 +72,6 @@ export default function TopBar() {
           )));
         }
       }
-
     } catch (err) {
       console.log(err);
     }

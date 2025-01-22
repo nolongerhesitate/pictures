@@ -12,10 +12,12 @@ import { useRef } from "react";
 import { closeDialog, useDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
 
 // TODO: give it a try to merge dialogContext.js and this file
+// FIXME: It's not working
 export default function Dialog() {
   const cancelRef = useRef()
   const dialog = useDialog();
   const dialogDispatch = useDialogDispatch();
+
 
   if (dialog.isOpen === false) {
     return null;

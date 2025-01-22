@@ -18,6 +18,7 @@ export async function POST(request) {
     const formData = await request.formData();
     const files = formData.getAll("file");
 
+
     if (!files || files.length <= 0) {
       return NextResponse.json(new DataResult("failed", "No file provided"));
     }
@@ -86,6 +87,32 @@ export async function POST(request) {
               (user_id, picture_id) values
               ('${session.user.id}','${id}')`;
       await querySql(sql);
+
+      // generate thumbnail
+      try {
+        const thumbHeight = 300;
+        const thumbWidth = Math.floor(thumbHeight * (imgInfo.width / imgInfo.height));
+        const thumbPath = path.join(process.cwd(), `public/thumbnails/`, originalFileName);
+
+        try {
+          await fs.access(path.dirname(thumbPath));
+        } catch (error) {
+          await fs.mkdir(path.dirname(thumbPath), { recursive: true });
+        }
+
+        await sharp(cacheFilePath).resize(thumbWidth, thumbHeight, {
+          fit: "inside", // Ensures the image is resized to fit within the specified dimensions while maintaining its aspect ratio
+          withoutEnlargement: true, // Prevents the image from being enlarged if it's smaller than the specified dimensions
+        }).toFile(thumbPath);
+
+        sql = `insert into thumbnails 
+                (picture_id, thumbnail_path, width, height) 
+                values 
+                ($1, $2, $3, $4)`;
+        await querySql(sql, [id, thumbPath, thumbWidth, thumbHeight]);
+      } catch (error) {
+        logger.error("Error generating thumbnail", error);
+      }
 
       await fs.copyFile(cacheFilePath, originalFilePath);
 
