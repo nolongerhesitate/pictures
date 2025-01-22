@@ -25,6 +25,11 @@ export default function UploadTasks() {
   useEffect(() => {
     emitter.on(EVENTS.UPLOADTASK_OPENED, onOpen);
     emitter.on(EVENTS.UPLOADTASK_CLOSED, onClose);
+
+    return () => {
+      emitter.off(EVENTS.UPLOADTASK_OPENED, onOpen);
+      emitter.off(EVENTS.UPLOADTASK_CLOSED, onClose);
+    };
   }, []);
 
 

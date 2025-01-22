@@ -5,6 +5,10 @@ const emitter = mitt();
 export default emitter;
 
 export const EVENTS = {
-  UPLOADTASK_OPENED: 'UPLOADTASK_OPENED',
-  UPLOADTASK_CLOSED: 'UPLOADTASK_CLOSED',
+  // for upload-task.jsx
+  UPLOADTASK_OPENED: "UPLOADTASK_OPENED",
+  UPLOADTASK_CLOSED: "UPLOADTASK_CLOSED",
+
+  // get pictures for main-content.jsx 
+  PICTURES_FETCH: "PICTURES_FETCH",
 };

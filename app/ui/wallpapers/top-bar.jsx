@@ -72,6 +72,8 @@ export default function TopBar() {
           )));
         }
       }
+
+      emitter.emit(EVENTS.PICTURES_FETCH);
     } catch (err) {
       console.log(err);
     }
