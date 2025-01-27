@@ -56,6 +56,7 @@ export default function MainContent({ currentPage, setTotalPages }) {
       height="75vh"
       overflowY="auto"
       spacing="0.5rem"
+      padding="0.1rem"
     >
       {
         pictures?.map(pic => (

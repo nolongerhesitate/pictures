@@ -25,6 +25,11 @@ export default function PictureTile({ picture }) {
       objectFit="cover"
       border="1px solid #ccc"
       padding="2px"
+      transition="all 0.4s ease-in-out"
+      _hover={{
+        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)",
+        transition: "all 0.4s ease-in-out"
+      }}
     />
   );
 }
