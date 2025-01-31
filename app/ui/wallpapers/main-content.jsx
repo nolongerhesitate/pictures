@@ -10,6 +10,7 @@ import emitter, { EVENTS } from "@/app/lib/emitter";
 export default function MainContent({ currentPage, setTotalPages }) {
   const [pictures, setPictures] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedPicId, setSelectedPicId] = useState(null);
   const toast = useToast();
 
   const getPictures = async () => {
@@ -56,13 +57,15 @@ export default function MainContent({ currentPage, setTotalPages }) {
       height="75vh"
       overflowY="auto"
       spacing="0.5rem"
-      padding="0.1rem"
+      padding="0.2rem"
     >
       {
         pictures?.map(pic => (
           <PictureTile
             key={pic.id}
             picture={pic}
+            selectedPicId={selectedPicId}
+            setSelectedPicId={setSelectedPicId}
           />
         ))
       }
