@@ -1,16 +1,20 @@
 "use client";
 
-import { Wrap, useToast } from "@chakra-ui/react";
+import { Wrap } from "@chakra-ui/react";
+import { useDisclosure, useToast } from "@chakra-ui/react";
 import GlobalSpinner from "@/app/ui/components/global-spinner";
 import apiUtil from "@/app/lib/utils/apiUtil";
 import { useEffect, useState } from "react";
 import PictureTile from "@/app/ui/wallpapers/picture-tile";
 import emitter, { EVENTS } from "@/app/lib/emitter";
+import ShowingSinglePicture from "./showing-single-picture";
 
 export default function MainContent({ currentPage, setTotalPages }) {
   const [pictures, setPictures] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedPicId, setSelectedPicId] = useState(null);
+  const [selectedPicIndex, setSelectedPicIndex] = useState(-1);
+  const [previewPicIndex, setPreviewPicIndex] = useState(-1);
+  const { onOpen: openBigPicture, onClose: closeBigPicture, isOpen: isOpenBigPicture } = useDisclosure();
   const toast = useToast();
 
   const getPictures = async () => {
@@ -45,6 +49,11 @@ export default function MainContent({ currentPage, setTotalPages }) {
     return () => emitter.off(EVENTS.PICTURES_FETCH, getPictures);
   }, []);
 
+  const setSelPicIndex = (index) => {
+    setSelectedPicIndex(index);
+    setPreviewPicIndex(index);
+  }
+
 
   if (isLoading) {
     return (
@@ -60,15 +69,23 @@ export default function MainContent({ currentPage, setTotalPages }) {
       padding="0.2rem"
     >
       {
-        pictures?.map(pic => (
+        pictures?.map((pic, index) => (
           <PictureTile
             key={pic.id}
             picture={pic}
-            selectedPicId={selectedPicId}
-            setSelectedPicId={setSelectedPicId}
+            selectedPicIndex={selectedPicIndex}
+            setSelPicIndex={setSelPicIndex}
+            picIndex={index}
+            openBigPicture={openBigPicture}
           />
         ))
       }
+      {isOpenBigPicture && <ShowingSinglePicture
+        pictures={pictures}
+        selectedPicIndex={selectedPicIndex}
+        isOpen={isOpenBigPicture}
+        onClose={closeBigPicture}
+      />}
     </Wrap >
   );
 }
