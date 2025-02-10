@@ -13,7 +13,6 @@ export default function MainContent({ currentPage, setTotalPages }) {
   const [pictures, setPictures] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [selectedPicIndex, setSelectedPicIndex] = useState(-1);
-  const [previewPicIndex, setPreviewPicIndex] = useState(-1);
   const { onOpen: openBigPicture, onClose: closeBigPicture, isOpen: isOpenBigPicture } = useDisclosure();
   const toast = useToast();
 
@@ -51,7 +50,6 @@ export default function MainContent({ currentPage, setTotalPages }) {
 
   const setSelPicIndex = (index) => {
     setSelectedPicIndex(index);
-    setPreviewPicIndex(index);
   }
 
 
