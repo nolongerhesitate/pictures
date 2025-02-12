@@ -12,7 +12,7 @@ import ShowingSinglePicture from "./showing-single-picture";
 export default function MainContent({ currentPage, setTotalPages }) {
   const [pictures, setPictures] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedPicIndex, setSelectedPicIndex] = useState(-1);
+  const [selectedPicIndices, setSelectedPicIndices] = useState([]);
   const { onOpen: openBigPicture, onClose: closeBigPicture, isOpen: isOpenBigPicture } = useDisclosure();
   const toast = useToast();
 
@@ -48,10 +48,6 @@ export default function MainContent({ currentPage, setTotalPages }) {
     return () => emitter.off(EVENTS.PICTURES_FETCH, getPictures);
   }, []);
 
-  const setSelPicIndex = (index) => {
-    setSelectedPicIndex(index);
-  }
-
 
   if (isLoading) {
     return (
@@ -71,8 +67,8 @@ export default function MainContent({ currentPage, setTotalPages }) {
           <PictureTile
             key={pic.id}
             picture={pic}
-            selectedPicIndex={selectedPicIndex}
-            setSelPicIndex={setSelPicIndex}
+            selectedPicIndices={selectedPicIndices}
+            setSelPicIndices={setSelectedPicIndices}
             picIndex={index}
             openBigPicture={openBigPicture}
           />
@@ -80,7 +76,7 @@ export default function MainContent({ currentPage, setTotalPages }) {
       }
       {isOpenBigPicture && <ShowingSinglePicture
         pictures={pictures}
-        selectedPicIndex={selectedPicIndex}
+        selectedPicIndex={selectedPicIndices.length > 0 ? selectedPicIndices[0] : -1}
         isOpen={isOpenBigPicture}
         onClose={closeBigPicture}
       />}
