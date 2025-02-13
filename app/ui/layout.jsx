@@ -1,6 +1,7 @@
 import { Flex } from "@chakra-ui/react";
 import Header from "../ui/dashboard/header";
 import SideNav from "../ui/dashboard/sidenav";
+import Dialog from "@/app/ui/components/dialog";
 
 export default function Layout({ children }) {
   return (
@@ -26,6 +27,7 @@ export default function Layout({ children }) {
           {children}
         </div>
       </Flex>
+      <Dialog />
     </Flex>
   );
 }
