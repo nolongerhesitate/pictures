@@ -10,6 +10,7 @@ import { useState } from "react";
 export default function Page() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [isSelectedPics, setIsSelectedPics] = useState(false);
 
 
   return (
@@ -20,10 +21,13 @@ export default function Page() {
         // alignItems="stretch"
         gap={6}
       >
-        <TopBar></TopBar>
+        <TopBar
+          isSelectedPics={isSelectedPics}
+        />
         <MainContent
           currentPage={currentPage}
           setTotalPages={setTotalPages}
+          setIsSelectedPics={setIsSelectedPics}
         />
         <Pagination
           currentPage={currentPage}

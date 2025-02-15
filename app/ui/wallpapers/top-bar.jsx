@@ -1,7 +1,7 @@
 "use client";
 
-import { Flex, IconButton, Box, Tooltip, Icon, Input } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { Flex, IconButton, Box, Tooltip, Input, Spacer } from "@chakra-ui/react";
+import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useRef, useState, useEffect } from "react";
 import apiUtil from "@/app/lib/utils/apiUtil";
 import { useSelector, useDispatch } from "react-redux";
@@ -11,12 +11,21 @@ import dayjs from "dayjs";
 import emitter, { EVENTS } from "@/app/lib/emitter";
 
 
-export default function TopBar() {
+export default function TopBar({
+  isSelectedPics
+}) {
   const fileInputRef = useRef(null);
   const uploadTaskIdRef = useRef(null);
   const abortUploadRef = useRef(false);
   const reduxDispatch = useDispatch();
   const allUploadTasks = useSelector(selectUploadTasks);
+
+  const styles = {
+    IconButton: {
+      isRound: true,
+      variant: "outline",
+    }
+  };
 
   useEffect(() => {
     const curUploadTask = allUploadTasks.tasks.find(ut => ut.id === uploadTaskIdRef.current);
@@ -25,7 +34,7 @@ export default function TopBar() {
     }
   });
 
-  async function handleFileChange(e) {
+  const handleFileChange = async (e) => {
     try {
       const files = e.target.files;
       if (files.length <= 0) return;
@@ -79,18 +88,36 @@ export default function TopBar() {
     }
   }
 
+  const handleDelete = async () => {
+
+  };
+
+
   return (
     <Flex
       justifyContent="space-between"
     >
-      <Tooltip label="Upload">
-        <IconButton
-          isRound={true}
-          icon={<AddIcon />}
-          aria-label="upload images"
-          onClick={() => fileInputRef.current.click()}
-        />
-      </Tooltip>
+      <Flex
+        justifyContent="flex-start"
+        gap="1rem"
+      >
+        <Tooltip label="Upload">
+          <IconButton
+            icon={<AddIcon />}
+            aria-label="upload images"
+            onClick={() => fileInputRef.current.click()}
+            {...styles.IconButton}
+          />
+        </Tooltip>
+        {isSelectedPics && <Tooltip lable="Delete">
+          <IconButton
+            icon={<DeleteIcon />}
+            aria-label="delete images"
+            onClick={() => emitter.emit(EVENTS.DELETE_SELECTED_PICS)}
+            {...styles.IconButton}
+          />
+        </Tooltip>}
+      </Flex>
 
       <Box>
         <IconButton

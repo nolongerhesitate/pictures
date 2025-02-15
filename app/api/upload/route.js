@@ -42,11 +42,18 @@ export async function POST(request) {
 
       const hash = await imghash.hash(cacheFilePath);
 
-      let sql = `select hash from pictures`;
-      const allImgHash = await querySql(sql);
-      if (allImgHash && allImgHash.some(item => item === hash)) {
+      let sql = `select id, is_deleted from pictures where hash = '${hash}'`;
+      const hadPicture = await querySql(sql);
+      if (hadPicture.length > 0 && !hadPicture[0].is_deleted) {
         return NextResponse.json(new DataResult("success", "File has been existed!"));
       }
+
+      /*
+      const allImgHash = await querySql(sql);
+      if (allImgHash && allImgHash.some(item => item.hash === hash)) {
+        return NextResponse.json(new DataResult("success", "File has been existed!"));
+      }
+      */
 
       const originalFileName = `${hash}${path.extname(cacheFileName).toLowerCase()}`;
       const originalFolderName = hash.substring(0, 3);
@@ -59,11 +66,6 @@ export async function POST(request) {
         await fs.mkdir(originalFolderPath, { recursive: true });
       }
 
-      try {
-        await fs.access(originalFilePath, fs.constants.F_OK);
-        return NextResponse.json(new DataResult("success", "File has been existed!"));
-      } catch (error) {
-      }
 
       const metadata = await sharp(cacheFilePath).metadata();
 
@@ -77,16 +79,24 @@ export async function POST(request) {
         metadata.width,
         metadata.height,
         hash);
-      sql = `insert into pictures 
+
+      let insertPicId = hadPicture[0].id;
+
+      if (hadPicture.length > 0 && hadPicture[0].is_deleted) {
+        sql = `update pictures set is_deleted = false where id = '${hadPicture[0].id}'`
+        await querySql(sql);
+      } else {
+        sql = `insert into pictures 
               (path, display_name,  size,  type, width, height, hash) values 
               ('${imgInfo.path}', '${imgInfo.displayName}', ${imgInfo.size}, '${imgInfo.type}', ${imgInfo.width}, ${imgInfo.height}, '${imgInfo.hash}')
               returning id`;
-      const id = (await querySql(sql))[0].id;
+        insertPicId = (await querySql(sql))[0].id;
 
-      sql = `insert into picture_users_relationship 
+        sql = `insert into picture_users_relationship 
               (user_id, picture_id) values
               ('${session.user.id}','${id}')`;
-      await querySql(sql);
+        await querySql(sql);
+      }
 
       // generate thumbnail
       try {
@@ -109,12 +119,17 @@ export async function POST(request) {
                 (picture_id, thumbnail_path, width, height) 
                 values 
                 ($1, $2, $3, $4)`;
-        await querySql(sql, [id, thumbPath, thumbWidth, thumbHeight]);
+        await querySql(sql, [insertPicId, thumbPath, thumbWidth, thumbHeight]);
       } catch (error) {
         logger.error("Error generating thumbnail", error);
       }
 
-      await fs.copyFile(cacheFilePath, originalFilePath);
+      try {
+        await fs.access(originalFilePath, fs.constants.F_OK);
+        // return NextResponse.json(new DataResult("success", "File has been existed!"));
+      } catch (error) {
+        await fs.copyFile(cacheFilePath, originalFilePath);
+      }
 
       try {
         await fs.rm(cacheFilePath);

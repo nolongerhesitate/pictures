@@ -16,4 +16,9 @@ export default {
       responseType: "blob",
     });
   },
+  deletePictureByIds(ids) {
+    return instance.post(`/deletePictureByIds`, {
+      ids
+    });
+  }
 };

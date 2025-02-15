@@ -11,4 +11,6 @@ export const EVENTS = {
 
   // get pictures for main-content.jsx 
   PICTURES_FETCH: "PICTURES_FETCH",
+
+  DELETE_SELECTED_PICS: "DELETE_SELECTED_PICS",
 };

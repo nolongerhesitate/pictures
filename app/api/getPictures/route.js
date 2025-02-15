@@ -16,8 +16,9 @@ export async function GET(request) {
     let sql = `select picture_id from picture_users_relationship where user_id = $1 LIMIT $2 OFFSET $3`;
     const pictureIds = await querySql(sql, [session.user.id, limit, offset]);
 
-    const pictures = await Promise.all(pictureIds.map(async item => {
-      let sql = `select * from pictures where id = $1 `;
+    // TODO: Optimize
+    let pictures = await Promise.all(pictureIds.map(async item => {
+      let sql = `select * from pictures where id = $1 and is_deleted = false`;
       const result = await querySql(sql, [item.picture_id]);
       if (!result || result.length < 1) {
         return null;
@@ -34,8 +35,9 @@ export async function GET(request) {
       return result[0];
     }));
 
+    pictures = pictures.filter(item => item);
 
-    sql = `select count(*) from picture_users_relationship where user_id = $1`;
+    sql = `select count(*) from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.is_deleted = false and t1.user_id = $1`;
     const totalCount = await querySql(sql, [session.user.id]);
 
     return NextResponse.json(
