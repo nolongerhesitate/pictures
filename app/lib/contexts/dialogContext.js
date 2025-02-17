@@ -28,7 +28,6 @@ export function useDialogDispatch() {
 
 export function showYesCancelDialog(content, setDialogResult = null, title = null) {
   return showDialog(content, setDialogResult, title, 1);
-
 }
 
 export function showYesNoCancelDialog(content, setDialogResult = null, title = null) {
