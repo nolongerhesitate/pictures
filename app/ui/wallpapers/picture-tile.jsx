@@ -88,7 +88,7 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
       <Box
         textAlign="center"
         fontSize="0.8rem"
-      // margin="0.2rem 0"
+        margin="0.2rem 0"
       >
         {picture.display_name}
       </Box>
