@@ -108,7 +108,7 @@ export default function TopBar({
         {
           isSelectedPics && (
             <>
-              <Tooltip lable="Download">
+              <Tooltip label="Download">
                 <IconButton
                   icon={<ArrowDownIcon fontSize="1.4rem" />}
                   aria-label="Download images"
@@ -116,7 +116,7 @@ export default function TopBar({
                   {...styles.IconButton}
                 />
               </Tooltip>
-              <Tooltip lable="Delete">
+              <Tooltip label="Delete">
                 <IconButton
                   icon={<DeleteIcon />}
                   aria-label="delete images"
