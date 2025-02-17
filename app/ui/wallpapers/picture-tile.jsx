@@ -1,6 +1,5 @@
-import { Image } from "@chakra-ui/react";
+import { Image, Box, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
-import { MultiSelType } from "@/app/lib/definitions.js";
 
 export default function PictureTile({ picture, selectedPicIndices, setSelPicIndices, picIndex, openBigPicture }) {
   const [SELECT, META, SHIFT] = [0, 1, 2];
@@ -20,7 +19,7 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
     else if (key === "Shift") setMultiSelType(multiSelType & (~SHIFT));
   };
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     // shift and meta be pressed simultaneously
     if ((multiSelType & SHIFT) === SHIFT) {
       setSelPicIndices(indices => {
@@ -65,23 +64,34 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
   }, []);
 
   return (
-    <Image
-      // width={picture.thumbWidth}
-      // height={picture.thumbHeight}
+    <Box
       width="16%"
-      aspectRatio="1/1"
-      src={picSrc}
-      objectFit="cover"
-      border={isSelected ? "0px" : "1px solid #ccc"}
-      outline={isSelected ? "3px solid orange" : "none"}
-      padding="2px"
-      transition="border 0.2s ease-in-out"
-      _hover={{
-        boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)",
-        transition: "box-shadow 0.3s ease-in-out"
-      }}
-      onClick={handleClick}
-      onDoubleClick={handleDoubleClick}
-    />
+    >
+      <Image
+        // width={picture.thumbWidth}
+        // height={picture.thumbHeight}
+        width="100%"
+        aspectRatio="1/1"
+        src={picSrc}
+        objectFit="cover"
+        border={isSelected ? "0px" : "1px solid #ccc"}
+        outline={isSelected ? "3px solid orange" : "none"}
+        padding="2px"
+        transition="border 0.2s ease-in-out"
+        _hover={{
+          boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.5)",
+          transition: "box-shadow 0.3s ease-in-out"
+        }}
+        onClick={handleClick}
+        onDoubleClick={handleDoubleClick}
+      />
+      <Box
+        textAlign="center"
+        fontSize="0.8rem"
+      // margin="0.2rem 0"
+      >
+        {picture.display_name}
+      </Box>
+    </Box>
   );
 }

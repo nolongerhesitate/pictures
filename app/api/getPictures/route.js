@@ -13,7 +13,7 @@ export async function GET(request) {
     const page = request.nextUrl.searchParams.get("page") || 1;
     const limit = request.nextUrl.searchParams.get("limit") || 10;
     const offset = (page - 1) * limit;
-    let sql = `select picture_id from picture_users_relationship where user_id = $1 LIMIT $2 OFFSET $3`;
+    let sql = `select t1.picture_id from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.is_deleted = false and user_id = $1 LIMIT $2 OFFSET $3`;
     const pictureIds = await querySql(sql, [session.user.id, limit, offset]);
 
     // TODO: Optimize
