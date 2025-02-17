@@ -1,7 +1,7 @@
 "use client";
 
-import { Flex, IconButton, Box, Tooltip, Input, Spacer } from "@chakra-ui/react";
-import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
+import { Flex, IconButton, Box, Tooltip, Input } from "@chakra-ui/react";
+import { AddIcon, DeleteIcon, ArrowDownIcon } from "@chakra-ui/icons";
 import { useRef, useState, useEffect } from "react";
 import apiUtil from "@/app/lib/utils/apiUtil";
 import { useSelector, useDispatch } from "react-redux";
@@ -88,10 +88,6 @@ export default function TopBar({
     }
   }
 
-  const handleDelete = async () => {
-
-  };
-
 
   return (
     <Flex
@@ -109,14 +105,28 @@ export default function TopBar({
             {...styles.IconButton}
           />
         </Tooltip>
-        {isSelectedPics && <Tooltip lable="Delete">
-          <IconButton
-            icon={<DeleteIcon />}
-            aria-label="delete images"
-            onClick={() => emitter.emit(EVENTS.DELETE_SELECTED_PICS)}
-            {...styles.IconButton}
-          />
-        </Tooltip>}
+        {
+          isSelectedPics && (
+            <>
+              <Tooltip lable="Download">
+                <IconButton
+                  icon={<ArrowDownIcon fontSize="1.4rem" />}
+                  aria-label="Download images"
+                  onClick={() => emitter.emit(EVENTS.DOWNLOAD_SELECTED_PICS)}
+                  {...styles.IconButton}
+                />
+              </Tooltip>
+              <Tooltip lable="Delete">
+                <IconButton
+                  icon={<DeleteIcon />}
+                  aria-label="delete images"
+                  onClick={() => emitter.emit(EVENTS.DELETE_SELECTED_PICS)}
+                  {...styles.IconButton}
+                />
+              </Tooltip>
+            </>
+          )
+        }
       </Flex>
 
       <Box>

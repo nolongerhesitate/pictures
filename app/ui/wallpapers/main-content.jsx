@@ -20,6 +20,7 @@ export default function MainContent({
   const [selectedPicIndices, setSelectedPicIndices] = useState([]);
   const { onOpen: openBigPicture, onClose: closeBigPicture, isOpen: isOpenBigPicture } = useDisclosure();
   const [dialogResult, setDialogResult] = useState(null);
+  const [isDownloadSelectedPics, setIsDownloadSelectedPics] = useState(false);
   const dialogDispatch = useDialogDispatch();
   const toast = useToast();
 
@@ -50,8 +51,6 @@ export default function MainContent({
         selectedPicIndices.map(index => pictures[index]?.id)
       );
 
-      console.log("#result:", result);
-
       if (result.status === "success") {
         getPictures();
         toast({
@@ -62,9 +61,42 @@ export default function MainContent({
         });
       }
     } catch (error) {
+      toast({
+        title: "error toast",
+        description: "Failed to delete pictures!",
+        status: "error",
+        isClosable: true,
+      });
+    }
+  };
 
-    } finally {
+  const downloadSelectedPics = async () => {
+    try {
+      selectedPicIndices.forEach(async index => {
+        const picture = pictures[index];
+        let url = picture.src;
+        if (!url) {
+          const blob = await apiUtil.downloadPictureById(picture?.id);
+          url = URL.createObjectURL(blob);
+        }
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = picture?.display_name;
+        document.body.appendChild(a);
+        a.click();
 
+        setTimeout(() => {
+          document.body.removeChild(a);
+          // URL.revokeObjectURL(url);
+        }, 1000);
+      });
+    } catch (error) {
+      toast({
+        title: "error toast",
+        description: "Failed to download pictures!",
+        status: "error",
+        isClosable: true,
+      });
     }
   };
 
@@ -80,14 +112,20 @@ export default function MainContent({
         setDialogResult));
     };
 
+    const download = () => {
+      setIsDownloadSelectedPics(true);
+    }
+
     emitter.on(EVENTS.PICTURES_FETCH, getPictures);
     emitter.on(EVENTS.DELETE_SELECTED_PICS, showDialog);
+    emitter.on(EVENTS.DOWNLOAD_SELECTED_PICS, download);
 
     // React will call your cleanup function each time before the Effect runs again, 
     // and one final time when the component unmounts (gets removed).
     return () => {
       emitter.off(EVENTS.PICTURES_FETCH, getPictures);
       emitter.off(EVENTS.DELETE_SELECTED_PICS, showDialog);
+      emitter.off(EVENTS.DOWNLOAD_SELECTED_PICS, download);
     }
   }, []);
 
@@ -104,6 +142,11 @@ export default function MainContent({
   if (dialogResult) {
     deleteSelectedPics();
     setDialogResult(null);
+  }
+
+  if (isDownloadSelectedPics) {
+    downloadSelectedPics();
+    setIsDownloadSelectedPics(false);
   }
 
 
