@@ -9,6 +9,8 @@ import PictureTile from "@/app/ui/wallpapers/picture-tile";
 import emitter, { EVENTS } from "@/app/lib/emitter";
 import ShowingSinglePicture from "./showing-single-picture";
 import { showYesCancelDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
+import { useSelector } from "react-redux";
+import { selectPictureState } from "@/app/lib/store/pictureStateSlice";
 
 export default function MainContent({
   currentPage,
@@ -23,11 +25,13 @@ export default function MainContent({
   const [isDownloadSelectedPics, setIsDownloadSelectedPics] = useState(false);
   const dialogDispatch = useDialogDispatch();
   const toast = useToast();
+  const pictureState = useSelector(selectPictureState);
+
 
   const getPictures = async () => {
     try {
       setIsLoading(true)
-      const result = await apiUtil.getAllPictures(currentPage);
+      const result = await apiUtil.getAllPictures(pictureState.searchFeed, currentPage);
       setPictures(result.data);
       if (result.pagination) {
         const totalPages = Math.ceil(result.pagination.totalCount / result.pagination.limit);
@@ -100,9 +104,10 @@ export default function MainContent({
     }
   };
 
+  // getPictures
   useEffect(() => {
     getPictures();
-  }, [currentPage]);
+  }, [currentPage, pictureState]);
 
   // register emitters
   useEffect(() => {

@@ -57,6 +57,7 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
   useEffect(() => {
     window.addEventListener("keydown", downHandler);
     window.addEventListener("keyup", upHandler);
+
     return () => {
       window.removeEventListener("keydown", downHandler);
       window.removeEventListener("keyup", upHandler);

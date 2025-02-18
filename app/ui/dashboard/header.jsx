@@ -1,21 +1,24 @@
 "use client";
 
 import {
-  Flex, Spacer,
-  Text, Input, InputGroup,
+  Input, InputGroup,
   InputLeftElement, Avatar,
+  InputRightElement,
   Menu, MenuButton, MenuList, MenuItem,
 } from "@chakra-ui/react";
-import { Search2Icon } from "@chakra-ui/icons";
+import { IconButton, Flex, Spacer, Text } from "@chakra-ui/react";
+import { Search2Icon, CloseIcon } from "@chakra-ui/icons";
 import Logo from "../logo";
 import { useState } from "react";
 import { signOut } from "next-auth/react"
 import { useSelector } from "react-redux";
 // import { selectUser } from "@/app/lib/store/userSlice";
 import { selectUploadTasks } from "@/app/lib/store/uploadTasksSlice";
+import { useDispatch } from "react-redux";
 import { showYesCancelDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
 import { useSession } from "next-auth/react";
 import UploadTasks from "../components/uploadTask/upload-tasks";
+import { searchPictures } from "@/app/lib/store/pictureStateSlice";
 
 
 export default function Header() {
@@ -24,6 +27,8 @@ export default function Header() {
   const dialogDispatch = useDialogDispatch();
   const { data: session } = useSession();
   const allUploadTasks = useSelector(selectUploadTasks);
+  const dispatch = useDispatch();
+  const [searchFeed, setSearchFeed] = useState("");
 
   const uploadTasksComp = (
     <>
@@ -35,6 +40,7 @@ export default function Header() {
   if (dialogResult) {
     signOut();
   }
+
 
   return (
     <Flex
@@ -55,7 +61,25 @@ export default function Header() {
         <InputLeftElement pointerEvents="none">
           <Search2Icon color="gray.300" />
         </InputLeftElement>
-        <Input placeholder="Search" />
+        <Input
+          placeholder="Search"
+          value={searchFeed}
+          onInput={(e) => setSearchFeed(e.target.value)}
+          onKeyUp={(e) => {
+            if (e.key === "Enter")
+              dispatch(searchPictures({ searchFeed: searchFeed }));
+          }}
+        />
+        {searchFeed !== "" && (
+          <InputRightElement>
+            <IconButton
+              isRound={true}
+              icon={<CloseIcon color="gray.500" />}
+              size="xs"
+              onClick={() => setSearchFeed("")}
+            />
+          </InputRightElement>
+        )}
       </InputGroup>
 
       <Flex
@@ -70,9 +94,13 @@ export default function Header() {
             <Avatar name={session?.user.username} />
           </MenuButton>
           <MenuList>
-            <MenuItem onClick={() =>
-              dialogDispatch(showYesCancelDialog("Do you want to sing out?", setDialogResult))
-            }>Sign Out</MenuItem>
+            <MenuItem
+              onClick={() =>
+                dialogDispatch(showYesCancelDialog("Do you want to sing out?", setDialogResult))
+              }
+            >
+              Sign Out
+            </MenuItem>
           </MenuList>
         </Menu>
       </Flex>

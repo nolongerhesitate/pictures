@@ -8,8 +8,8 @@ export default {
       },
     });
   },
-  getAllPictures(page, limit = 30) {
-    return instance.get(`/getPictures?page=${page}&limit=${limit}`);
+  getAllPictures(feed, page, limit = 30) {
+    return instance.get(`/getPictures?feed=${feed}&page=${page}&limit=${limit}`);
   },
   downloadPictureById(pictureId) {
     return instance.get(`/downloadPictureById?pictureId=${pictureId}`, {

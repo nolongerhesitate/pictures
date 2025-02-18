@@ -10,11 +10,12 @@ import path from "node:path";
 export async function GET(request) {
   try {
     const session = await getServerSession(authOptions);
+    const feed = request.nextUrl.searchParams.get("feed");
     const page = request.nextUrl.searchParams.get("page") || 1;
     const limit = request.nextUrl.searchParams.get("limit") || 10;
     const offset = (page - 1) * limit;
-    let sql = `select t1.picture_id from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.is_deleted = false and user_id = $1 LIMIT $2 OFFSET $3`;
-    const pictureIds = await querySql(sql, [session.user.id, limit, offset]);
+    let sql = `select t1.picture_id from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.display_name like $1 and t2.is_deleted = false and user_id = $2 LIMIT $3 OFFSET $4`;
+    const pictureIds = await querySql(sql, [`%${feed}%`, session.user.id, limit, offset]);
 
     // TODO: Optimize
     let pictures = await Promise.all(pictureIds.map(async item => {
