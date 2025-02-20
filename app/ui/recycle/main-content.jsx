@@ -39,6 +39,7 @@ export default function MainContent({
         isClosable: true,
       });
     } finally {
+      setSelectedPicIndices([]);
       setIsLoading(false);
     }
   };
@@ -105,13 +106,13 @@ export default function MainContent({
       if (isRestoreRecyclePictures && !await restorePictures()) return;
 
       if (isDeleteRecyclePictures && !await deletePictures()) return;
+
       await getPictures();
     }
 
     runAllAsync();
   }, [currentPage, searchFeed, isRestoreRecyclePictures, isDeleteRecyclePictures]);
 
-  // FIXME: buttons in top-bar are still enable after restore/delete recycle pictures
   useEffect(() => {
     setIsSelectedPics(selectedPicIndices.length > 0);
   }, [selectedPicIndices]);

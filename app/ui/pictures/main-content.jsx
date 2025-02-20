@@ -45,6 +45,7 @@ export default function MainContent({
         isClosable: true,
       });
     } finally {
+      setSelectedPicIndices([]);
       setIsLoading(false);
     }
   };
