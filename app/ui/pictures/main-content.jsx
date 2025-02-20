@@ -5,9 +5,9 @@ import { useDisclosure, useToast } from "@chakra-ui/react";
 import GlobalSpinner from "@/app/ui/components/global-spinner";
 import apiUtil from "@/app/lib/utils/apiUtil";
 import { useEffect, useState } from "react";
-import PictureTile from "@/app/ui/wallpapers/picture-tile";
+import PictureTile from "@/app/ui/components/picture-tile";
 import emitter, { EVENTS } from "@/app/lib/emitter";
-import ShowingSinglePicture from "./showing-single-picture";
+import ShowingSinglePicture from "../components/showing-single-picture";
 import { showYesCancelDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
 import { useSelector } from "react-redux";
 import { selectPictureState } from "@/app/lib/store/pictureStateSlice";
@@ -31,7 +31,7 @@ export default function MainContent({
   const getPictures = async () => {
     try {
       setIsLoading(true)
-      const result = await apiUtil.getAllPictures(pictureState.searchFeed, currentPage);
+      const result = await apiUtil.getAllPictures(pictureState.searchFeed, currentPage, false);
       setPictures(result.data);
       if (result.pagination) {
         const totalPages = Math.ceil(result.pagination.totalCount / result.pagination.limit);
@@ -49,17 +49,18 @@ export default function MainContent({
     }
   };
 
-  const deleteSelectedPics = async () => {
+  const trashSelectedPics = async () => {
     try {
-      const result = await apiUtil.deletePictureByIds(
-        selectedPicIndices.map(index => pictures[index]?.id)
+      const result = await apiUtil.recyclePictureByIds(
+        selectedPicIndices.map(index => pictures[index]?.id),
+        0
       );
 
       if (result.status === "success") {
         getPictures();
         toast({
           title: "success toast",
-          description: "Succese to delete pictures!",
+          description: "Succese moving pictures to recycle bin!",
           status: "success",
           isClosable: true,
         });
@@ -67,7 +68,7 @@ export default function MainContent({
     } catch (error) {
       toast({
         title: "error toast",
-        description: "Failed to delete pictures!",
+        description: "Failed to moving pictures!",
         status: "error",
         isClosable: true,
       });
@@ -113,7 +114,7 @@ export default function MainContent({
   useEffect(() => {
     const showDialog = () => {
       dialogDispatch(showYesCancelDialog(
-        "Are you sure you want to delete the selected pictures?",
+        "Are you sure you want to move the selected pictures to recycle bin?",
         setDialogResult));
     };
 
@@ -145,7 +146,7 @@ export default function MainContent({
   }
 
   if (dialogResult) {
-    deleteSelectedPics();
+    trashSelectedPics();
     setDialogResult(null);
   }
 
@@ -163,7 +164,8 @@ export default function MainContent({
       padding="0.2rem"
     >
       {
-        pictures?.map((pic, index) => (
+        pictures?.map((pic, index) =>
+        (
           <PictureTile
             key={pic.id}
             picture={pic}

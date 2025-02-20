@@ -24,7 +24,7 @@ export default function LoginForm() {
       const res = await signIn("credentials", {
         username: userInfo.username,
         password: userInfo.password,
-        callbackUrl: "/dashboard",
+        callbackUrl: "/pictures",
         redirect: false,
       });
 

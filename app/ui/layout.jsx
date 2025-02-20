@@ -1,6 +1,6 @@
 import { Flex } from "@chakra-ui/react";
-import Header from "../ui/dashboard/header";
-import SideNav from "../ui/dashboard/sidenav";
+import Header from "./components/header";
+import SideNav from "./components/sidenav";
 import Dialog from "@/app/ui/components/dialog";
 
 export default function Layout({ children }) {
@@ -18,11 +18,9 @@ export default function Layout({ children }) {
         mt="10px"
       >
         <SideNav
-          mr="10px"
-          p="20px"
-          gap="10px"
-          minW="3xs"
-        ></SideNav>
+          mr="1.8rem"
+          w="3rem"
+        />
         <div className="w-full">
           {children}
         </div>

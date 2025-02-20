@@ -17,7 +17,7 @@ import { selectUploadTasks } from "@/app/lib/store/uploadTasksSlice";
 import { useDispatch } from "react-redux";
 import { showYesCancelDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
 import { useSession } from "next-auth/react";
-import UploadTasks from "../components/uploadTask/upload-tasks";
+import UploadTasks from "./uploadTask/upload-tasks";
 import { searchPictures } from "@/app/lib/store/pictureStateSlice";
 
 
@@ -96,7 +96,12 @@ export default function Header() {
           <MenuList>
             <MenuItem
               onClick={() =>
-                dialogDispatch(showYesCancelDialog("Do you want to sing out?", setDialogResult))
+                dialogDispatch(
+                  showYesCancelDialog(
+                    "Do you want to sing out?",
+                    setDialogResult
+                  )
+                )
               }
             >
               Sign Out

@@ -8,8 +8,10 @@ export default {
       },
     });
   },
-  getAllPictures(feed, page, limit = 30) {
-    return instance.get(`/getPictures?feed=${feed}&page=${page}&limit=${limit}`);
+  // TODO: limit=32
+  // Get all pictures when deleted be null, deleted be true, otherwise be true
+  getAllPictures(feed, page, deleted = null, limit = 30) {
+    return instance.get(`/getPictures?feed=${feed}&page=${page}&deleted=${deleted}&limit=${limit}`);
   },
   downloadPictureById(pictureId) {
     return instance.get(`/downloadPictureById?pictureId=${pictureId}`, {
@@ -20,5 +22,11 @@ export default {
     return instance.post(`/deletePictureByIds`, {
       ids
     });
-  }
+  },
+  recyclePictureByIds(ids, type) {
+    return instance.post(`/recyclePictureByIds`, {
+      ids,
+      type
+    });
+  },
 };

@@ -6,6 +6,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "../auth/[...nextauth]/route";
 import fs from "node:fs/promises";
 
+
 export async function POST(request) {
   try {
     const session = await getServerSession(authOptions);
@@ -17,16 +18,27 @@ export async function POST(request) {
 
     const idStr = param.ids.map(id => `'${id}'`).join(", ");
     // check if the user has the permissions to delete the pictures 
-    let sql = `select id from picture_users_relationship where user_id = $1 and picture_id in (${idStr})`;
+    let sql = `select t1.id from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t1.user_id = $1 and t2.is_deleted = true and t1.picture_id in (${idStr})`;
     let result = await querySql(sql, [session.user.id]);
 
     if (result.length !== param.ids.length) {
       return NextResponse.json(new DataResult("failed", "You don't have permission to delete the selected pictures")); ``
     }
 
-    // update is_deleted field to true
-    sql = `update pictures set is_deleted = true where id in (${idStr})`;
+    // sql = `update pictures set is_deleted = true where id in (${idStr})`;
+    sql = ` select path from pictures where id in (${idStr})`;
     result = await querySql(sql);
+
+    for (const item of result) {
+      try {
+        await fs.rm(item.path);
+      } catch (error) {
+        logger.error(error);
+      }
+    }
+
+    sql = `delete from pictures where id in (${idStr})`;
+    await querySql(sql);
 
     // delete thumbnail files
     sql = `select thumbnail_path from thumbnails where picture_id in (${idStr})`;
@@ -35,7 +47,7 @@ export async function POST(request) {
       try {
         await fs.rm(path.thumbnail_path);
       } catch {
-        continue;
+        logger.error(error);
       }
     }
 

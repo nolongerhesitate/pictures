@@ -64,6 +64,7 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
     };
   }, []);
 
+  // TODO: width="12%"
   return (
     <Box
       width="16%"

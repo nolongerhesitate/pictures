@@ -2,8 +2,8 @@
 
 import Layout from "../ui/layout";
 import { Flex } from "@chakra-ui/react";
-import TopBar from "../ui/wallpapers/top-bar";
-import MainContent from "../ui/wallpapers/main-content";
+import TopBar from "../ui/pictures/top-bar";
+import MainContent from "../ui/pictures/main-content";
 import Pagination from "../ui/components/pagination";
 import { useState } from "react";
 

@@ -13,14 +13,20 @@ export async function GET(request) {
     const feed = request.nextUrl.searchParams.get("feed");
     const page = request.nextUrl.searchParams.get("page") || 1;
     const limit = request.nextUrl.searchParams.get("limit") || 10;
+    const deleted = request.nextUrl.searchParams.get("deleted");
+    const delete_param = (deleted === null ? undefined : deleted);
     const offset = (page - 1) * limit;
-    let sql = `select t1.picture_id from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.display_name like $1 and t2.is_deleted = false and user_id = $2 LIMIT $3 OFFSET $4`;
-    const pictureIds = await querySql(sql, [`%${feed}%`, session.user.id, limit, offset]);
+
+    let sql = `select t1.picture_id from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.display_name like $1`;
+    delete_param !== undefined && (sql += ` and t2.is_deleted = $2`);
+    sql += ` and user_id = $3 LIMIT $4 OFFSET $5`;
+    const pictureIds = await querySql(sql, [`%${feed}%`, delete_param, session.user.id, limit, offset]);
 
     // TODO: Optimize
     let pictures = await Promise.all(pictureIds.map(async item => {
-      let sql = `select * from pictures where id = $1 and is_deleted = false`;
-      const result = await querySql(sql, [item.picture_id]);
+      let sql = `select * from pictures where id = $1`;
+      delete_param !== undefined && (sql += ` and is_deleted = $2`);
+      const result = await querySql(sql, [item.picture_id, delete_param]);
       if (!result || result.length < 1) {
         return null;
       }
@@ -38,8 +44,9 @@ export async function GET(request) {
 
     pictures = pictures.filter(item => item);
 
-    sql = `select count(*) from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.is_deleted = false and t1.user_id = $1`;
-    const totalCount = await querySql(sql, [session.user.id]);
+    sql = `select count(*) from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t1.user_id = $1`;
+    delete_param !== undefined && (sql += ` and t2.is_deleted = $2`);
+    const totalCount = await querySql(sql, [session.user.id, delete_param]);
 
     return NextResponse.json(
       new DataResult(

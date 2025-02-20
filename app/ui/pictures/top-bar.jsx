@@ -9,6 +9,7 @@ import { selectUploadTasks, addTask, addErrorDetail, completedCountPlusOne, skip
 import { ErrorDetail, UploadTask } from "@/app/lib/definitions";
 import dayjs from "dayjs";
 import emitter, { EVENTS } from "@/app/lib/emitter";
+import { usePathname } from "next/navigation";
 
 
 export default function TopBar({
@@ -19,6 +20,9 @@ export default function TopBar({
   const abortUploadRef = useRef(false);
   const reduxDispatch = useDispatch();
   const allUploadTasks = useSelector(selectUploadTasks);
+  const pathname = usePathname();
+
+  console.log("#content_pathname:", pathname)
 
   const styles = {
     IconButton: {
@@ -111,15 +115,15 @@ export default function TopBar({
               <Tooltip label="Download">
                 <IconButton
                   icon={<ArrowDownIcon fontSize="1.4rem" />}
-                  aria-label="Download images"
+                  aria-label="download pictures"
                   onClick={() => emitter.emit(EVENTS.DOWNLOAD_SELECTED_PICS)}
                   {...styles.IconButton}
                 />
               </Tooltip>
-              <Tooltip label="Delete">
+              <Tooltip label="Trash">
                 <IconButton
                   icon={<DeleteIcon />}
-                  aria-label="delete images"
+                  aria-label="move pictures to recycle"
                   onClick={() => emitter.emit(EVENTS.DELETE_SELECTED_PICS)}
                   {...styles.IconButton}
                 />
@@ -130,12 +134,12 @@ export default function TopBar({
       </Flex>
 
       <Box>
-        <IconButton
-          isRound={true}
-          icon={<AddIcon />}
-          aria-label="add"
-        />
-        <IconButton isRound={true} icon={<AddIcon />} aria-label="add" />
+        {/* <IconButton */}
+        {/*   isRound={true} */}
+        {/*   icon={<AddIcon />} */}
+        {/*   aria-label="add" */}
+        {/* /> */}
+        {/* <IconButton isRound={true} icon={<AddIcon />} aria-label="add" /> */}
       </Box>
       <Input type="file" ref={fileInputRef} onChange={handleFileChange} hidden multiple />
     </Flex >
