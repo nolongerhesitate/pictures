@@ -9,7 +9,6 @@ import { selectUploadTasks, addTask, addErrorDetail, completedCountPlusOne, skip
 import { ErrorDetail, UploadTask } from "@/app/lib/definitions";
 import dayjs from "dayjs";
 import emitter, { EVENTS } from "@/app/lib/emitter";
-import { usePathname } from "next/navigation";
 
 
 export default function TopBar({
@@ -20,9 +19,6 @@ export default function TopBar({
   const abortUploadRef = useRef(false);
   const reduxDispatch = useDispatch();
   const allUploadTasks = useSelector(selectUploadTasks);
-  const pathname = usePathname();
-
-  console.log("#content_pathname:", pathname)
 
   const styles = {
     IconButton: {
