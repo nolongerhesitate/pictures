@@ -28,7 +28,7 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
           return [picIndex];
         } else {
           let newIndices = [indices[0]];
-          let [start, end] = picIndex < indices[0] ? [picIndex, indices[0]] : [indices[0], picIndex];
+          let [start, end] = picIndex < indices[0] ? [picIndex, indices[0] - 1] : [indices[0] + 1, picIndex];
           for (let i = start; i <= end; i++) {
             newIndices.push(i);
           }
