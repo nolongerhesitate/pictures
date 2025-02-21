@@ -27,7 +27,6 @@ export async function POST(request) {
     result = await querySql(sql, [type === 0]);
 
     return NextResponse.json(new DataResult("success", "Pictures had been moved to recycle successfully!"));
-
   } catch (error) {
     logger.error(error);
     return NextResponse.json(new DataResult("failed", "Failed to recycle pictures!"));
