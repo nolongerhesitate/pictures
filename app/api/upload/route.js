@@ -80,21 +80,21 @@ export async function POST(request) {
         metadata.height,
         hash);
 
-      let insertPicId = hadPicture[0].id;
+      let insertPicId = hadPicture?.length > 0 ? hadPicture[0].id : null;
 
-      if (hadPicture.length > 0 && hadPicture[0].is_deleted) {
-        sql = `update pictures set is_deleted = false where id = '${hadPicture[0].id}'`
+      if (insertPicId !== null) {
+        sql = `update pictures set is_deleted = false where id = '${insertPicId}'`;
         await querySql(sql);
       } else {
         sql = `insert into pictures 
-              (path, display_name,  size,  type, width, height, hash) values 
+              (path, display_name, size, type, width, height, hash) values 
               ('${imgInfo.path}', '${imgInfo.displayName}', ${imgInfo.size}, '${imgInfo.type}', ${imgInfo.width}, ${imgInfo.height}, '${imgInfo.hash}')
-              returning id`;
+              returning id;`;
         insertPicId = (await querySql(sql))[0].id;
 
         sql = `insert into picture_users_relationship 
               (user_id, picture_id) values
-              ('${session.user.id}','${id}')`;
+              ('${session.user.id}','${insertPicId}')`;
         await querySql(sql);
       }
 
