@@ -29,6 +29,7 @@ export async function POST(request) {
     sql = ` select path from pictures where id in (${idStr})`;
     result = await querySql(sql);
 
+    // delete pictures
     for (const item of result) {
       try {
         await fs.rm(item.path);
@@ -39,6 +40,9 @@ export async function POST(request) {
 
     sql = `delete from pictures where id in (${idStr})`;
     await querySql(sql);
+
+    sql = `delete from picture_users_relationship where picture_id in (${idStr}) and user_id= $1`;
+    await querySql(sql, [session.user.id]);
 
     // delete thumbnail files
     sql = `select thumbnail_path from thumbnails where picture_id in (${idStr})`;
