@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import GlobalSpinner from "@/app/ui/components/global-spinner";
 import PictureTile from "@/app/ui/components/picture-tile";
-import { Wrap } from "@chakra-ui/react";
+import { Wrap, Box } from "@chakra-ui/react";
 import { useDisclosure, useToast } from '@chakra-ui/react';
 import ShowingSinglePicture from "@/app/ui/components/showing-single-picture";
 import apiUtil from "@/app/lib/utils/apiUtil";
@@ -120,6 +120,17 @@ export default function MainContent({
 
   if (isLoading) {
     return <GlobalSpinner />;
+  }
+
+  if (!pictures || pictures.length === 0) {
+    return (
+      <Box
+        textAlign="center"
+        height="75vh"
+      >
+        No pictures found
+      </Box>
+    );
   }
 
 

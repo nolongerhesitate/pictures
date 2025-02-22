@@ -156,6 +156,16 @@ export default function MainContent({
     setIsDownloadSelectedPics(false);
   }
 
+  if (!pictures || pictures.length === 0) {
+    return (
+      <Box
+        textAlign="center"
+        height="75vh"
+      >
+        No pictures found
+      </Box>
+    );
+  }
 
   return (
     <Wrap
