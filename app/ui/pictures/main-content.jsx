@@ -1,6 +1,6 @@
 "use client";
 
-import { Wrap } from "@chakra-ui/react";
+import { Wrap, Box } from "@chakra-ui/react";
 import { useDisclosure, useToast } from "@chakra-ui/react";
 import GlobalSpinner from "@/app/ui/components/global-spinner";
 import apiUtil from "@/app/lib/utils/apiUtil";
