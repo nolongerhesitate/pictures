@@ -12,13 +12,14 @@ import Logo from "../logo";
 import { useState } from "react";
 import { signOut } from "next-auth/react"
 import { useSelector } from "react-redux";
-// import { selectUser } from "@/app/lib/store/userSlice";
 import { selectUploadTasks } from "@/app/lib/store/uploadTasksSlice";
 import { useDispatch } from "react-redux";
 import { showYesCancelDialog, useDialogDispatch } from "@/app/lib/contexts/dialogContext";
 import { useSession } from "next-auth/react";
 import UploadTasks from "./uploadTask/upload-tasks";
 import { searchPictures } from "@/app/lib/store/pictureStateSlice";
+import Settings from "@/app/ui/components/settings";
+import { useDisclosure } from "@chakra-ui/react";
 
 
 export default function Header() {
@@ -29,6 +30,7 @@ export default function Header() {
   const allUploadTasks = useSelector(selectUploadTasks);
   const dispatch = useDispatch();
   const [searchFeed, setSearchFeed] = useState("");
+  const { isOpen: isOpenSettings, onOpen: onOpenSettings, onClose: onCloseSettings } = useDisclosure();
 
   const uploadTasksComp = (
     <>
@@ -95,6 +97,11 @@ export default function Header() {
           </MenuButton>
           <MenuList>
             <MenuItem
+              onClick={onOpenSettings}
+            >
+              Settings
+            </MenuItem>
+            <MenuItem
               onClick={() =>
                 dialogDispatch(
                   showYesCancelDialog(
@@ -109,6 +116,10 @@ export default function Header() {
           </MenuList>
         </Menu>
       </Flex>
+      <Settings
+        isOpen={isOpenSettings}
+        onClose={onCloseSettings}
+      />
     </Flex >
   );
 }
