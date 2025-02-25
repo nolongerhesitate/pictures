@@ -2,7 +2,7 @@
 
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 
-import theme from "@/app/lib/theme.js";
+import theme from "@/app/ui/themes/theme.js";
 
 
 export default function ChakraProviderWrapper({ children }) {

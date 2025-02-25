@@ -12,6 +12,7 @@ import { CloseIcon, ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useToast } from '@chakra-ui/react';
 import { useState, useEffect } from "react";
 import apiUtil from '@/app/lib/utils/apiUtil';
+import useStylesColorMode from "@/app/lib/hooks/useStylesColorMode";
 
 
 export default function ShowingSinglePicture({
@@ -24,6 +25,7 @@ export default function ShowingSinglePicture({
   const [offsetIndex, setOffsetIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
+  const stylesColorMode = useStylesColorMode();
 
   const handlePrevPic = () => {
     if ((selectedPicIndex + offsetIndex) <= 0) return;
@@ -68,6 +70,7 @@ export default function ShowingSinglePicture({
       variant: "outline",
       colorScheme: "gray",
       color: "#B7B7B8",
+      bg: useStylesColorMode("none", "gray"),
       _hover: {
         color: "white",
         cursor: "pointer",
@@ -81,7 +84,10 @@ export default function ShowingSinglePicture({
       size="full"
       isOpen={isOpen}
     >
-      <ModalOverlay />
+      <ModalOverlay
+        bg='blackAlpha.300'
+        backdropFilter='blur(1px)'
+      />
       <ModalContent bg="none">
         <Flex
           h="100vh"
@@ -123,7 +129,7 @@ export default function ShowingSinglePicture({
             />
             {/* <Text>{picture?.displayName}</Text> */}
             <Text
-              color="white"
+              color="#f5f5f5"
               fontSize="0.9rem"
             >
               {picture.display_name}

@@ -5,11 +5,13 @@ import { Flex, IconButton, Tooltip } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { TiImage } from "react-icons/ti";
 import { useRouter } from "next/navigation";
+import useStylesColorMode from "@/app/lib/hooks/useStylesColorMode";
 
 
 export default function SideNav({ ...props }) {
   const pathname = usePathname();
   const router = useRouter();
+  const stylesColorMode = useStylesColorMode();
 
   const styles = {
     IconButton: {
@@ -18,11 +20,11 @@ export default function SideNav({ ...props }) {
       boxSize: "3rem",
       // iconSize: "1.5rem",
       _hover: {
-        background: "gray.100",
+        background: stylesColorMode._hoverBgColor,
       },
     },
     IconButtonSelected: {
-      background: "orange.100",
+      background: stylesColorMode.bgColor,
       _hover: {},
     },
   };

@@ -1,8 +1,14 @@
+"use client";
+
 import Logo from "@/app/ui/logo";
 import LoginForm from "@/app/ui/login-form";
 import { Flex, Text, Box } from "@chakra-ui/react";
+import useStylesColorMode from "@/app/lib/hooks/useStylesColorMode";
 
 export default function Page() {
+  const stylesColorMode = useStylesColorMode();
+
+
   return (
     <Flex
       direction="column"
@@ -18,11 +24,11 @@ export default function Page() {
         <Box textAlign="center" my={2}>
           <Text fontSize="2xl" as="b"
             className="my-0 py-0"
-            color="gray.700"
-          >R-Wallpapers</Text>
+            color={stylesColorMode.fontColor}
+          >R-Pictures</Text>
           <Text fontSize="xl"
             className="my-0 py-0"
-            color="gray.600"
+            color={useStylesColorMode("gray.600", "#f5f5f5")}
           >Management</Text>
         </Box>
         <LoginForm />

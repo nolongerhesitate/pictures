@@ -1,11 +1,13 @@
 import { Image, Box, Text } from "@chakra-ui/react";
 import { useState, useEffect } from "react";
+import useStylesColorMode from "@/app/lib/hooks/useStylesColorMode";
 
 export default function PictureTile({ picture, selectedPicIndices, setSelPicIndices, picIndex, openBigPicture }) {
   const [SELECT, META, SHIFT] = [0, 1, 2];
   const picSrc = `${process.env.NEXT_PUBLIC_THUMBNAILS_URL}/${picture.thumbFileName}`;
   const isSelected = selectedPicIndices?.includes(picIndex);
   const [multiSelType, setMultiSelType] = useState(SELECT); // 
+  const stylesColorMode = useStylesColorMode();
 
   const downHandler = ({ key }) => {
     // set status
@@ -76,7 +78,8 @@ export default function PictureTile({ picture, selectedPicIndices, setSelPicIndi
         aspectRatio="1/1"
         src={picSrc}
         objectFit="cover"
-        border={isSelected ? "0px" : "1px solid #ccc"}
+        border={isSelected ? "0px" : "1px solid"}
+        borderColor={stylesColorMode.pictureBorderColor}
         outline={isSelected ? "3px solid orange" : "none"}
         padding="2px"
         transition="border 0.2s ease-in-out"

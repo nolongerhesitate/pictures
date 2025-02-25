@@ -20,6 +20,7 @@ import UploadTasks from "./uploadTask/upload-tasks";
 import { searchPictures } from "@/app/lib/store/pictureStateSlice";
 import Settings from "@/app/ui/components/settings";
 import { useDisclosure } from "@chakra-ui/react";
+import useStylesColorMode from "@/app/lib/hooks/useStylesColorMode";
 
 
 export default function Header() {
@@ -31,6 +32,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const [searchFeed, setSearchFeed] = useState("");
   const { isOpen: isOpenSettings, onOpen: onOpenSettings, onClose: onCloseSettings } = useDisclosure();
+  const stylesColorMode = useStylesColorMode();
 
   const uploadTasksComp = (
     <>
@@ -54,8 +56,8 @@ export default function Header() {
         alignItems="center"
         minW="170px">
         <Logo width={50} height={50}></Logo>
-        <Text fontSize="xl" color="gray.700">
-          R-Wallpapers
+        <Text fontSize="xl" color={stylesColorMode.fontColor}>
+          R-Pictures
         </Text>
       </Flex>
 
@@ -76,7 +78,7 @@ export default function Header() {
           <InputRightElement>
             <IconButton
               isRound={true}
-              icon={<CloseIcon color="gray.500" />}
+              icon={<CloseIcon color="white.500" />}
               size="xs"
               onClick={() => setSearchFeed("")}
             />
