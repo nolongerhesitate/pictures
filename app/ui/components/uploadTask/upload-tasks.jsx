@@ -51,12 +51,12 @@ export default function UploadTasks() {
           variant="ghost"
         />
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent maxWidth="600px">
         <PopoverHeader>
           <Flex
             justifyContent="space-between"
           >
-            <p className="font-bold text-md">Background Tasks</p>
+            <p className="font-bold text-md">Tasks</p>
             <Spacer />
             <Button
               colorScheme="gray"

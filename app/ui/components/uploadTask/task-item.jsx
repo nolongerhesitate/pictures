@@ -42,6 +42,7 @@ export default function TaskItem({ task }) {
       justifyContent="space-between"
       alignItems="center"
       gap="10px"
+      mb="1rem"
     >
       <Icon boxSize={6} as={BsImage} />
       <Flex
@@ -58,6 +59,7 @@ export default function TaskItem({ task }) {
             :
             <Progress
               value={processingVal}
+              width="100%"
               size="xs"
             />
         }

@@ -14,7 +14,7 @@ const generateContent = (task) => {
 
   return task.isCompleted
     ? (task.failedCount === task.totalCount ? 'Failed to upload' : uploadedStr)
-    : `Uploading and processing ${task.completedCount} / ${task.totalCount} items...`;
+    : `Uploading ${task.completedCount} / ${task.totalCount} items...`;
 }
 
 const generateCompleted = (task) => {
