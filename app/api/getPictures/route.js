@@ -22,7 +22,6 @@ export async function GET(request) {
     sql += ` and t1.user_id = $3 order by t2.display_name asc LIMIT $4 OFFSET $5`;
     let pictures = await querySql(sql, [`%${feed}%`, delete_param, session.user.id, limit, offset]);
 
-    // TODO: Optimize
     pictures.forEach(async item => {
       sql = `select thumbnail_path, width, height from thumbnails where picture_id = $1`;
       const thumb = (await querySql(sql, [item.id]))[0];
