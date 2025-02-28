@@ -19,7 +19,7 @@ export async function GET(request) {
 
     let sql = `select t2.* from picture_users_relationship as t1 left join pictures as t2 on t1.picture_id = t2.id where t2.display_name like $1`;
     delete_param !== undefined && (sql += ` and t2.is_deleted = $2`);
-    sql += ` and t1.user_id = $3 order by t2.display_name asc LIMIT $4 OFFSET $5`;
+    sql += ` and t1.user_id = $3 order by t2.upload_time desc LIMIT $4 OFFSET $5`;
     let pictures = await querySql(sql, [`%${feed}%`, delete_param, session.user.id, limit, offset]);
 
     pictures.forEach(async item => {
