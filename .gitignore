@@ -128,3 +128,9 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+.DS_Store
+package-lock.json
+next-env.d.ts
+public/cache
+public/storage
+public/thumbnails
