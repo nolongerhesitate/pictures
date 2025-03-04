@@ -131,3 +131,6 @@ dist
 .DS_Store
 package-lock.json
 next-env.d.ts
+public/cache
+public/storage
+public/thumbnails
