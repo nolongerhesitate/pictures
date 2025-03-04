@@ -25,7 +25,6 @@ export default function ShowingSinglePicture({
   const [offsetIndex, setOffsetIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const toast = useToast();
-  const stylesColorMode = useStylesColorMode();
 
   const handlePrevPic = () => {
     if ((selectedPicIndex + offsetIndex) <= 0) return;
