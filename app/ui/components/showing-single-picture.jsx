@@ -164,6 +164,7 @@ export default function ShowingSinglePicture({
               <Image
                 flex="1"
                 src={picture.src}
+                width="0"
                 height="100%"
                 objectFit="contain"
               />
