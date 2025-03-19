@@ -45,7 +45,6 @@ export default function Header() {
   }
 
 
-  // TODO: change the title from R-Pictures to Pictures
   return (
     <Flex
       height="60px"
@@ -57,7 +56,7 @@ export default function Header() {
         minW="170px">
         <Logo width={50} height={50}></Logo>
         <Text fontSize="xl" color={stylesColorMode.fontColor}>
-          R-Pictures
+          Pictures
         </Text>
       </Flex>
 

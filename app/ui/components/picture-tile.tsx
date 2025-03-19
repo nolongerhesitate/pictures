@@ -79,10 +79,9 @@ export default function PictureTile({
     };
   }, []);
 
-  // TODO: width="12%"
   return (
     <Box
-      width="16%"
+      width="12%"
     >
       <Image
         // width={picture.thumbWidth}
