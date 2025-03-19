@@ -1,6 +1,6 @@
 # Picture Management Web Application
 
-This project is a practice application developed as part of my transition to web frontend development. It showcases my ability to build a modern, responsive web application using a variety of technologies and tools.
+This project is a practice application developed as part of my transition to web frontend development.
 
 ## Features
 
