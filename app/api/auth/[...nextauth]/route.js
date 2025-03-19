@@ -21,7 +21,7 @@ export const authOptions = {
       else if (new URL(url).origin === baseUrl) return url
       return baseUrl
     },
-    jwt({ token, user, account }) {
+    jwt({ token, user, account }){
       // This if branch must have
       if (account) {
         token.accessToken = account.access_token;
