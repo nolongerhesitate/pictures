@@ -40,12 +40,13 @@ export async function POST(request: Request) {
       }
 
       const cacheFileName: string = file.name;
-      const cacheFilePath = path.join(process.cwd(), "public/cache", cacheFileName);
+      const cacheFolderName: string = path.join(process.cwd(), "public/cache");
+      const cacheFilePath = path.join(cacheFolderName, cacheFileName);
 
       try {
-        await fs.access(path.dirname(cacheFilePath));
+        await fs.access(cacheFolderName);
       } catch (error) {
-        await fs.mkdir(path.dirname(cacheFilePath), { recursive: true });
+        await fs.mkdir(cacheFolderName, { recursive: true });
       }
 
       await fs.writeFile(cacheFilePath, Buffer.from(new Uint8Array(await file.arrayBuffer())));
@@ -111,12 +112,13 @@ export async function POST(request: Request) {
       try {
         const thumbHeight:number = 300;
         const thumbWidth:number = Math.floor(thumbHeight * (imgInfo.width / imgInfo.height));
-        const thumbPath:string = path.join(process.cwd(), `public/thumbnails/`, originalFileName);
+        const thumbFolderPath:string = path.join(process.cwd(), `public/thumbnails/`);
+        const thumbPath:string = path.join(thumbFolderPath, originalFileName);
 
         try {
-          await fs.access(path.dirname(thumbPath));
+          await fs.access(thumbFolderPath);
         } catch (error) {
-          await fs.mkdir(path.dirname(thumbPath), { recursive: true });
+          await fs.mkdir(thumbFolderPath, { recursive: true });
         }
 
         await sharp(cacheFilePath).resize(thumbWidth, thumbHeight, {
