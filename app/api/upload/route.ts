@@ -40,7 +40,7 @@ export async function POST(request: Request) {
       }
 
       const cacheFileName: string = file.name;
-      const cacheFolderName: string = path.join(process.cwd(), "public/cache");
+      const cacheFolderName: string = path.join(publicFolderPath, "cache");
       const cacheFilePath = path.join(cacheFolderName, cacheFileName);
 
       try {
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
       const originalFileName: string = `${hash}${path.extname(cacheFileName).toLowerCase()}`;
       const originalFolderName: string = hash.substring(0, 3);
-      const originalFolderPath: string = path.join(process.cwd(), `public/storage/${originalFolderName}`);
+      const originalFolderPath: string = path.join(publicFolderPath, `storage/${originalFolderName}`);
       const originalFilePath: string = path.join(originalFolderPath, originalFileName);
 
       try {
@@ -112,7 +112,7 @@ export async function POST(request: Request) {
       try {
         const thumbHeight:number = 300;
         const thumbWidth:number = Math.floor(thumbHeight * (imgInfo.width / imgInfo.height));
-        const thumbFolderPath:string = path.join(process.cwd(), `public/thumbnails/`);
+        const thumbFolderPath:string = path.join(publicFolderPath, `thumbnails/`);
         const thumbPath:string = path.join(thumbFolderPath, originalFileName);
 
         try {
@@ -154,6 +154,7 @@ export async function POST(request: Request) {
     return NextResponse.json(dataResult);
   } catch (err) {
     logger.error(err);
+    console.log(err);
     dataResult.status = DataResultStatus.Failed;
     dataResult.message = err.message;
     return NextResponse.json(dataResult);
