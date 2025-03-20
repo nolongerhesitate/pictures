@@ -24,6 +24,14 @@ export async function POST(request: Request) {
       return NextResponse.json(dataResult);
     }
 
+    const publicFolderPath = path.join(process.cwd(), "public");
+
+    try {
+      await fs.access(publicFolderPath);
+    } catch (error) {
+      await fs.mkdir(publicFolderPath, { recursive: true });
+    }
+
     // Actually just one file once upload
     for (const file of files) {
       if (!file.type.startsWith("image/")) {
