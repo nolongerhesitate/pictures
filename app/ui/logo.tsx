@@ -5,8 +5,8 @@ export default function Logo({
   width = 400,
   height = 200
 }: {
-  width: number,
-  height: number
+  width?: number,
+  height?: number
 }) {
   return (
     <Image

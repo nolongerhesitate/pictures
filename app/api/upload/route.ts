@@ -9,7 +9,7 @@ import { querySql } from "@/app/lib/actions";
 import sharp from "sharp";
 import dayjs from "dayjs";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 
 export async function POST(request: Request) {

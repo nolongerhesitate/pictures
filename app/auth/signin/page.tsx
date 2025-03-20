@@ -28,13 +28,12 @@ export default function Page() {
           >R-Pictures</Text>
           <Text fontSize="xl"
             className="my-0 py-0"
-            color={useStylesColorMode("gray.600", "#f5f5f5")}
+            color={stylesColorMode.fontColor}
           >Management</Text>
         </Box>
         <LoginForm />
       </Box>
     </Flex >
-    // </main>
   );
 }
 
