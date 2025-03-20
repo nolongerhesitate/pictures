@@ -8,6 +8,7 @@ const handler = NextAuth({
   pages: {
     signIn: "/auth/signin"
   },
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     signIn({ user, account, profile, email, credentials }) {
       return true;
