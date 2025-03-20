@@ -177,7 +177,7 @@ export interface ErrorDetail {
  * User interface
  */
 export interface User {
-  id?: string;
+  id: string;
   username: string;
   password: string;
   enabled?: boolean;

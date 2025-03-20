@@ -11,7 +11,7 @@ import { User } from "../lib/types";
 
 
 export default function LoginForm() {
-  const [userInfo, setUserInfo] = useState<User>({ username: "", password: "" });
+  const [userInfo, setUserInfo] = useState<User>({ id: "", username: "", password: "" });
   const [errorInfo, setErrorInfo] = useState<string | null>(null);
   const [isLogining, setIsLogining] = useState<boolean>(false);
   const router = useRouter();

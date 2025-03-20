@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import { querySql } from "@/app/lib/actions";
 import { DataResult, DataResultStatus } from "@/app/lib/types";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import fs from "node:fs/promises";
 
 

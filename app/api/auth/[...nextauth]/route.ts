@@ -1,10 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth from 'next-auth';
 import Credentials from "next-auth/providers/credentials";
 import { getUser } from "@/app/lib/actions";
 import bcrypt from "bcrypt";
 
-
-export const authOptions = {
+const handler = NextAuth({
   // custom pages
   pages: {
     signIn: "/auth/signin"
@@ -38,10 +37,14 @@ export const authOptions = {
     },
   },
   providers: [
-    Credentials.default({
+    Credentials({
+      credentials: {
+        username: { label: 'Username', type: 'text' },
+        password: { label: 'Password', type: 'password' }
+      },
       type: "credentials",
       name: "credentials",
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const { username, password } = credentials;
         const error = new Error("E-mail address or password is incorrect.");
 
@@ -49,14 +52,12 @@ export const authOptions = {
         if (!user) throw error;
 
         const same = await bcrypt.compare(password, hashedPassword);
-        if (same) return user;
+        if (same) return { id: user.id, ...user, password };
 
         throw error;
       }
     })
   ],
-};
-
-const handler = NextAuth.default(authOptions);
+});
 
 export { handler as GET, handler as POST };
