@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { querySql } from "@/app/lib/actions";
 import { getServerSession } from "next-auth/next";
-import { authOptions } from "@/lib/auth";
+import { authOptions } from "@/app/lib/auth";
 import { DataResult,DataResultStatus, Pagination, Picture } from "@/app/lib/types";
 import logger from "@/app/lib/log";
 import path from "node:path";
