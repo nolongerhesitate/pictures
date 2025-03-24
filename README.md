@@ -6,7 +6,7 @@ This project is a practice application developed as part of my transition to web
 
 - Upload and manage pictures
 - Navigate through picture gallery
-- Responsive design for various devices
+- Responsive design
 - Dark and light mode support
 
 ## Technologies Used
